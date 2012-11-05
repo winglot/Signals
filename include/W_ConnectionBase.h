@@ -1,5 +1,5 @@
-#ifndef WE_CONNECTIONBASE_H
-#define WE_CONNECTIONBASE_H
+#ifndef W_CONNECTIONBASE_H
+#define W_CONNECTIONBASE_H
 
 namespace W {
     class Slot;
@@ -14,4 +14,4 @@ namespace W {
     };
 }
 
-#endif /* end of include guard: WE_CONNECTIONBASE_H */
+#endif /* end of include guard: W_CONNECTIONBASE_H */

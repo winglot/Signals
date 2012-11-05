@@ -1,5 +1,5 @@
-#ifndef WE_SIGNAL_H
-#define WE_SIGNAL_H
+#ifndef W_SIGNAL_H
+#define W_SIGNAL_H
 
 #include <list>
 
@@ -46,4 +46,4 @@ namespace W {
 
 } /* W */
 
-#endif /* end of include guard: WE_SIGNAL_H */
+#endif /* end of include guard: W_SIGNAL_H */

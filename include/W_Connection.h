@@ -1,5 +1,5 @@
-#ifndef WE_CONNECTION_H
-#define WE_CONNECTION_H
+#ifndef W_CONNECTION_H
+#define W_CONNECTION_H
 
 #include "W_ConnectionBase.h"
 #include "W_Slot.h"
@@ -40,4 +40,4 @@ namespace W {
     };
 } /* W */
 
-#endif /* end of include guard: WE_CONNECTION_H */
+#endif /* end of include guard: W_CONNECTION_H */

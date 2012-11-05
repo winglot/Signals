@@ -1,9 +1,8 @@
 CXX = g++
-CXXFLAGS = -std=c++11 -I../include -L../build
-LIBA = -lVarSlot_static
+CXXFLAGS = -std=c++11 -I../include
 
-simple:
-	$(CXX) simple.cpp $(CXXFLAGS) $(LIBA) -o $@
+simple: ./simple.cpp
+	$(CXX) simple.cpp $(CXXFLAGS) -o $@
 
 clean:
 	rm -f *.o

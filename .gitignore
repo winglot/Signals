@@ -1,6 +1,3 @@
-# Ignore CMake external build directory
-build/
-
 # Other
 *.o
 *.swp

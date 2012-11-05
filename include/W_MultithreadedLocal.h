@@ -1,5 +1,5 @@
-#ifndef WE_MULTITHREADEDLOCAL_H
-#define WE_MULTITHREADEDLOCAL_H
+#ifndef W_MULTITHREADEDLOCAL_H
+#define W_MULTITHREADEDLOCAL_H
 
 namespace W {
 
@@ -80,4 +80,4 @@ namespace W {
 
 } /* W */
 
-#endif /* end of include guard: WE_MULTITHREADEDLOCAL_H */
+#endif /* end of include guard: W_MULTITHREADEDLOCAL_H */
