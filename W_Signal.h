@@ -15,6 +15,14 @@ namespace W {
 
             Signal(const Signal<T...> &s): SignalBase<T...>(s) {}
 
+            void connect(void (*memfun)(T...)) {
+                LockBlock lock(this);
+
+                ConnectionFunction<T...>* conn = new ConnectionFunction<T...>(memfun);
+
+                SignalBase<T...>::m_connected_slots.push_back(conn);
+            }
+
             template <typename DestType>
             void connect(DestType* pclass, void (DestType::*memfun)(T...)) {
                 LockBlock lock(this);
@@ -28,18 +36,8 @@ namespace W {
             void emit(T ...t) {
                 LockBlock lock(this);
 
-                typename std::list< ConnectionBase<T...>* >::const_iterator itNext;
-
-                typename std::list< ConnectionBase<T...>* >::const_iterator it = SignalBase<T...>::m_connected_slots.begin();
-                typename std::list< ConnectionBase<T...>* >::const_iterator itEnd = SignalBase<T...>::m_connected_slots.end();
-
-                while(it != itEnd) {
-                    itNext = it;
-                    itNext++;
-
-                    (*it)->emit(t...);
-
-                    it = itNext;
+                for(auto &connection: SignalBase<T...>::m_connected_slots) {
+                    connection->emit(t...);
                 }
             }
     };

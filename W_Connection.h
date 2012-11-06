@@ -38,6 +38,33 @@ namespace W {
             DestType* m_object;
             void (DestType::*m_memfun)(T ...t);
     };
+
+    template <typename ...T>
+    class ConnectionFunction: public ConnectionBase<T...> {
+        public:
+            ConnectionFunction() {
+                m_memfun = nullptr;
+            }
+
+            ConnectionFunction(void (*memfun)(T ...t)) {
+                m_memfun = memfun;
+            }
+
+            virtual void emit(T ...t) {
+                (*m_memfun)(t...);
+            }
+
+            virtual ConnectionBase<T...>* clone() {
+                return new ConnectionFunction<T...> (*this);
+            }
+
+            virtual typename ConnectionBase<T...>::memberfun getmemfun() const {
+                return m_memfun;
+            }
+
+        private:
+            void (*m_memfun)(T ...t);
+    };
 } /* W */
 
 #endif /* end of include guard: W_CONNECTION_H */

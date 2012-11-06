@@ -7,10 +7,13 @@ namespace W {
     template <typename  ...T>
     class ConnectionBase {
         public:
-            virtual Slot* getdest() const = 0;
+            typedef void (*memberfun)(T ...t);
+
+            virtual Slot* getdest() const { return nullptr; }
+            virtual memberfun getmemfun() const { return nullptr; }
             virtual void emit(T ...t) = 0;
             virtual ConnectionBase* clone() = 0;
-            virtual ConnectionBase* duplicate(Slot* pnewdest) = 0;
+            virtual ConnectionBase* duplicate(Slot* pnewdest) { return nullptr; }
     };
 }
 

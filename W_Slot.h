@@ -25,7 +25,7 @@ namespace W {
 
 /*
  * Implementation
- * Solves circular dependency problems
+ * Solves circular dependency problems without separate .cpp file
  */
 #include "W_Slot.h"
 #include "W_SignalBase.h"
@@ -36,13 +36,10 @@ namespace W {
 
     Slot::Slot(const Slot& hs): MultithreadedLocal(hs) {
         LockBlock lock(this);
-        std::set< __SignalBase* >::const_iterator it = hs.m_senders.begin();
-        std::set< __SignalBase* >::const_iterator itEnd = hs.m_senders.end();
 
-        while(it != itEnd) {
-            (*it)->slot_duplicate(&hs, this);
-            m_senders.insert(*it);
-            ++it;
+        for(auto &sender: hs.m_senders) {
+            sender->slot_duplicate(&hs, this);
+            m_senders.insert(sender);
         }
     } 
 
@@ -63,12 +60,9 @@ namespace W {
 
     void Slot::disconnect_all() {
         LockBlock lock(this);
-        std::set< __SignalBase* >::const_iterator it = m_senders.begin();
-        std::set< __SignalBase* >::const_iterator itEnd = m_senders.end();
 
-        while(it != itEnd) {
-            (*it)->slot_disconnect(this);
-            ++it;
+        for(auto &sender: m_senders) {
+            sender->slot_disconnect(this);
         }
 
         m_senders.erase(m_senders.begin(), m_senders.end());

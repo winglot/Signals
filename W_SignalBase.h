@@ -17,7 +17,6 @@ namespace W {
 
     template <typename ...T>
     class SignalBase: public __SignalBase {
-
         protected:
             std::list< ConnectionBase<T...>* > m_connected_slots;
 
@@ -27,14 +26,9 @@ namespace W {
             SignalBase(const SignalBase<T...> &s) {
                 LockBlock lock(this);
 
-                typename std::list< ConnectionBase<T...>* >::const_iterator it = s.m_connected_slots.begin();
-                typename std::list< ConnectionBase<T...>* >::const_iterator itEnd = s.m_connected_slots.end();
-
-                while(it != itEnd) {
-                    (*it)->getdest()->signal_connect(this);
-                    m_connected_slots.push_back((*it)->clone());
-
-                    it++;
+                for(auto &obj: s.m_connected_slots) {
+                    obj->getdest()->signal_connect(this);
+                    m_connected_slots.push_back(obj->clone());
                 }
 
             }
@@ -46,48 +40,62 @@ namespace W {
             void disconnect_all() {
                 LockBlock lock(this);
 
-                typename std::list< ConnectionBase<T...>* >::const_iterator it = m_connected_slots.begin();
-                typename std::list< ConnectionBase<T...>* >::const_iterator itEnd = m_connected_slots.end();
+                for(auto &obj: m_connected_slots) {
+                    if(obj->getdest() != nullptr) {
+                        obj->getdest()->signal_disconnect(this);
+                    }
 
-                while(it != itEnd) {
-                    (*it)->getdest()->signal_disconnect(this);
-                    delete *it;
-
-                    it++;
+                    delete obj;
                 }
 
                 m_connected_slots.erase(m_connected_slots.begin(), m_connected_slots.end());
             }
 
+            void disconnect(typename ConnectionBase<T...>::memberfun memfun) {
+                LockBlock lock(this);
+
+                auto it = m_connected_slots.begin();
+                auto itEnd = m_connected_slots.end();
+
+                while(it != itEnd && (*it)->getmemfun() != memfun) {
+                    it++;
+                }
+
+                if(it != itEnd) {
+                    delete *it;
+                    m_connected_slots.erase(it);
+                }
+            }
+
             void disconnect(Slot *pclass) {
                 LockBlock lock(this);
 
-                typename std::list< ConnectionBase<T...>* >::const_iterator it = m_connected_slots.begin();
-                typename std::list< ConnectionBase<T...>* >::const_iterator itEnd = m_connected_slots.end();
+                auto it = m_connected_slots.begin();
+                auto itEnd = m_connected_slots.end();
 
-                while(it != itEnd) {
-                    if((*it)->getdest() == pclass) {
-                        delete *it;
-                        m_connected_slots.erase(it);
-                        pclass->signal_disconnect(this);
-                        return;
-                    }
-
+                while(it != itEnd && (*it)->getdest() != pclass) {
                     it++;
+                }
+
+                if(it != itEnd) {
+                    delete *it;
+                    m_connected_slots.erase(it);
+                    pclass->signal_disconnect(this);
                 }
             }
 
             void slot_disconnect(Slot *pslot) {
                 LockBlock lock(this);
 
-                typename std::list< ConnectionBase<T...>* >::iterator it = m_connected_slots.begin();
-                typename std::list< ConnectionBase<T...>* >::iterator itEnd = m_connected_slots.end();
+                auto it = m_connected_slots.begin();
+                auto itEnd = m_connected_slots.end();
+                auto itNext = it;
 
                 while(it != itEnd) {
-                    typename std::list< ConnectionBase<T...>* >::iterator itNext = it;
+                    auto obj = *it;
                     itNext++;
 
-                    if((*it)->getdest() == pslot) {
+                    if(obj->getdest() == pslot) {
                         m_connected_slots.erase(it);
                     }
 
@@ -98,12 +106,14 @@ namespace W {
             void slot_duplicate(const Slot* oldtarget, Slot* newtarget) {
                 LockBlock lock(this);
 
-                typename std::list< ConnectionBase<T...>* >::const_iterator it = m_connected_slots.begin();
-                typename std::list< ConnectionBase<T...>* >::const_iterator itEnd = m_connected_slots.end();
+                auto it = m_connected_slots.begin();
+                auto itEnd = m_connected_slots.end();
                 
                 while(it != itEnd) {
-                    if((*it)->getdest() == oldtarget) {
-                        m_connected_slots.push_back((*it)->duplicate(newtarget));
+                    auto obj = *it;
+
+                    if(obj->getdest() == oldtarget) {
+                        m_connected_slots.push_back(obj->duplicate(newtarget));
                     }
 
                     it++;

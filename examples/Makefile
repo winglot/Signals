@@ -1,5 +1,5 @@
 CXX = g++
-CXXFLAGS = -std=c++11 -I../include
+CXXFLAGS = -std=c++11 -I../
 
 simple: ./simple.cpp
 	$(CXX) simple.cpp $(CXXFLAGS) -o $@
