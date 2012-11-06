@@ -10,13 +10,13 @@ namespace W {
 
     class Slot : public MultithreadedLocal {
         public:
-            Slot();
-            Slot(const Slot& hs);
-            virtual ~Slot();
+            inline Slot();
+            inline Slot(const Slot& hs);
+            virtual inline ~Slot();
 
-            void signal_connect(__SignalBase* sender);
-            void signal_disconnect(__SignalBase* sender);
-            void disconnect_all();
+            inline void signal_connect(__SignalBase* sender);
+            inline void signal_disconnect(__SignalBase* sender);
+            inline void disconnect_all();
 
         private:
             std::set< __SignalBase* > m_senders;
