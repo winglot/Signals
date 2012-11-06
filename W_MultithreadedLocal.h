@@ -1,11 +1,10 @@
 #ifndef W_MULTITHREADEDLOCAL_H
 #define W_MULTITHREADEDLOCAL_H
 
-namespace W {
-
 #ifdef _WIN32_
 
-    #include <windows.h>
+#include <windows.h>
+namespace W {
     class MultithreadedLocal {
         public:
             MultithreadedLocal() {
@@ -31,10 +30,12 @@ namespace W {
         private:
             CRITICAL_SECTION m_critsec;
     };
+}
 
 #else
 
-    #include <pthread.h>
+#include <pthread.h>
+namespace W {
     class MultithreadedLocal {
         public:
             MultithreadedLocal() {
@@ -60,9 +61,11 @@ namespace W {
         private:
             pthread_mutex_t m_mutex;
     };
+} /* W */
 
 #endif
 
+namespace W {
     class LockBlock {
         public:
             MultithreadedLocal *m_mutex;
@@ -76,8 +79,6 @@ namespace W {
                 m_mutex->unlock();
             }
     };
-
-
-} /* W */
+}
 
 #endif /* end of include guard: W_MULTITHREADEDLOCAL_H */
