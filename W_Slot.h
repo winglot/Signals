@@ -3,12 +3,12 @@
 
 #include <set>
 
-#include "W_MultithreadedLocal.h"
+#include "W_Mutex.h"
 
 namespace W {
     class __SignalBase;
 
-    class Slot : public MultithreadedLocal {
+    class Slot : public Mutex {
         public:
             inline Slot();
             inline Slot(const Slot& hs);
@@ -34,7 +34,7 @@ namespace W {
 
     Slot::Slot() {}
 
-    Slot::Slot(const Slot& hs): MultithreadedLocal(hs) {
+    Slot::Slot(const Slot& hs): Mutex(hs) {
         LockBlock lock(this);
 
         for(auto &sender: hs.m_senders) {

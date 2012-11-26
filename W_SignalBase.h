@@ -4,12 +4,12 @@
 #include <list>
 
 #include "W_ConnectionBase.h"
-#include "W_MultithreadedLocal.h"
+#include "W_Mutex.h"
 #include "W_Slot.h"
 
 namespace W {
 
-    class __SignalBase: public MultithreadedLocal {
+    class __SignalBase: public Mutex {
         public:
             virtual void slot_disconnect(Slot *pslot) = 0;
             virtual void slot_duplicate(const Slot *oldtarget, Slot *newtarget) = 0;

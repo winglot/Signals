@@ -7,6 +7,7 @@ namespace W {
     template <typename  ...T>
     class ConnectionBase {
         public:
+            virtual ~ConnectionBase() {}
             typedef void (*memberfun)(T ...t);
 
             virtual Slot* getdest() const { return nullptr; }
