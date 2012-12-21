@@ -15,6 +15,8 @@ namespace W {
 
             Signal(const Signal<T...> &s): SignalBase<T...>(s) {}
 
+            virtual ~Signal() {}
+
             void connect(void (*memfun)(T...)) {
                 LockBlock lock(this);
 

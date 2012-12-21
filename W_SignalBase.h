@@ -11,6 +11,7 @@ namespace W {
 
     class __SignalBase: public Mutex {
         public:
+            virtual ~__SignalBase() {}
             virtual void slot_disconnect(Slot *pslot) = 0;
             virtual void slot_duplicate(const Slot *oldtarget, Slot *newtarget) = 0;
     };
@@ -33,7 +34,7 @@ namespace W {
 
             }
 
-            ~SignalBase() {
+            virtual ~SignalBase() {
                 disconnect_all();
             }
 
@@ -44,7 +45,6 @@ namespace W {
                     if(obj->getdest() != nullptr) {
                         obj->getdest()->signal_disconnect(this);
                     }
-
                     delete obj;
                 }
 
@@ -98,6 +98,8 @@ namespace W {
                     if(obj->getdest() == pslot) {
                         m_connected_slots.erase(it);
                     }
+
+                    delete obj;
 
                     it = itNext;
                 }
