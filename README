@@ -5,4 +5,4 @@ Library requires C++ compiler supporting variadic templates and other C++11 feat
 Library has very minimal dependecies:
  - std::list
  - std::set
- - pthreads for multithreadeing
+ - std::mutex
