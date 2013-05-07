@@ -97,9 +97,8 @@ namespace W {
 
                     if(obj->getdest() == pslot) {
                         m_connected_slots.erase(it);
+                        delete obj;
                     }
-
-                    delete obj;
 
                     it = itNext;
                 }
