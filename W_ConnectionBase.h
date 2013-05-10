@@ -14,7 +14,7 @@ namespace W {
             virtual memberfun getmemfun() const { return nullptr; }
             virtual void emit(T ...t) = 0;
             virtual ConnectionBase* clone() = 0;
-            virtual ConnectionBase* duplicate(Slot* pnewdest) { return nullptr; }
+            virtual ConnectionBase* duplicate(Slot* pnewdest) { (void)pnewdest; return nullptr; }
     };
 }
 
