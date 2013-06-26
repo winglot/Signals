@@ -8,14 +8,42 @@
 namespace W {
     class __SignalBase;
 
+    /**
+     * Slot class of the Signal-Slot mechanism
+     */
     class Slot : public Mutex {
         public:
+            /**
+             * Constructs a new Slot class
+             */
             inline Slot();
+
+            /**
+             * Construct new Slot class from other Slot class
+             * @param  hs Slot object to be copied
+             */
             inline Slot(const Slot& hs);
+
+            /**
+             * Destructor releases all not released resources/signals
+             */
             virtual inline ~Slot();
 
+            /**
+             * Connect given signal to slot
+             * @param sender Signal to be connected
+             */
             inline void signal_connect(__SignalBase* sender);
+
+            /**
+             * Disconnect given signal from slot
+             * @param sender Signal to be disconneced
+             */
             inline void signal_disconnect(__SignalBase* sender);
+
+            /**
+             * Disconnects all signals from this slot
+             */
             inline void disconnect_all();
 
         private:
